@@ -75,7 +75,7 @@ function About() {
   return (
     <>
       {navComponent}
-      <section className=" flex justify-center h-max bg-red-50">
+  <section className=" flex justify-center h-max bg-app">
         <div className="w-[90vw] mt-16 mb-16 flex flex-col items-center">
           <p className=" font-semibold text-justify text-lg">
             At Blood Nation, we believe in the power of giving and saving lives.

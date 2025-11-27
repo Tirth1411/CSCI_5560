@@ -14,6 +14,8 @@ function AdminAvailability() {
 
   const navigate = useNavigate();
 
+  
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -174,6 +176,12 @@ const stateCityMap = {
     }
   };
 
+  // Load all stock on mount (no state/city filters) so the table shows all by default
+  useEffect(() => {
+    fetchBloodStock();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleDelete = async (docId) => {
     if (window.confirm("Do you want to delete this blood stock?")) {
       setLoading(true);
@@ -209,25 +217,27 @@ const stateCityMap = {
   return (
     <>
       {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-blue-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-primary-100">
           <div className="flex flex-col items-center justify-center bg-white/30 p-8 rounded-2xl shadow-2xl border border-white/40 backdrop-blur-lg">
-            <div className="w-10 h-10 border-4 border-t-transparent border-blue-400 rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
           </div>
         </div>
       )}
       <div className="flex h-screen">
         <Sidebar />
-        <div className="flex-1 bg-white overflow-auto">
-          <div className="flex items-center justify-between p-4 border-b shadow">
-            <h1 className="text-2xl font-semibold text-blue-900">
+        <div className="flex-1 bg-app overflow-auto">
+          <div className="flex items-center justify-between p-4 shadow">
+            <h1 className="text-2xl font-semibold text-secondary">
               Blood Availability Details
             </h1>
+
+            
           </div>
 
           {/* Search Section */}
           <div className="px-6 pt-6">
-            <div className="border p-4 rounded-lg shadow-md bg-white mb-4">
-              <h2 className="font-semibold text-blue-800 mb-4">Search</h2>
+            <div className="card card-animate p-4 mb-4">
+              <h2 className="font-semibold text-secondary mb-4">Search</h2>
               <div className="flex flex-wrap gap-4">
                 <select
                   name="state"
@@ -303,7 +313,7 @@ const stateCityMap = {
                   ))}
                 </select>
                 <button
-                  className="bg-blue-900 text-white px-4 py-2 rounded-md shadow hover:bg-blue-800 cursor-pointer"
+                  className="btn-primary btn-animate px-4 py-2 rounded-md"
                   onClick={fetchBloodStock}
                 >
                   Search
@@ -314,8 +324,8 @@ const stateCityMap = {
 
           {/* Filter Section */}
           <div className="px-6">
-            <div className="border p-4 rounded-lg shadow-md bg-white mb-4">
-              <h2 className="font-semibold text-blue-800 mb-4">Filter</h2>
+            <div className="card card-animate p-4 mb-4">
+              <h2 className="font-semibold text-secondary mb-4">Filter</h2>
               <div className="flex flex-wrap gap-4">
                 <select
                   value={filterName}
@@ -370,7 +380,7 @@ const stateCityMap = {
             <div className="overflow-x-auto">
               <div className="overflow-y-auto">
                 <table className="min-w-full table-auto border-collapse border border-gray-300">
-                  <thead className="bg-blue-900 text-white sticky top-0 z-10">
+                  <thead className="bg-primary text-on-primary sticky top-0 z-10">
                     <tr>
                       <th className="px-4 py-2 border">Blood Bank Name</th>
                       <th className="px-4 py-2 border">Blood Group</th>
@@ -384,7 +394,7 @@ const stateCityMap = {
                       <tr>
                         <td
                           colSpan="5"
-                          className="text-center py-4 font-semibold text-red-500"
+                          className="text-center py-4 font-semibold text-primary"
                         >
                           {tableInfo}
                         </td>
@@ -399,7 +409,7 @@ const stateCityMap = {
                             (!filterType || bank.bloodType === filterType)
                         )
                         .map((bank, index) => (
-                          <tr key={bank.id || index} className="border-t">
+                          <tr key={bank.id || index} className="border-t row-appear">
                             <td className="px-4 py-2 border">
                               {bank.bloodBankName}
                             </td>
@@ -415,13 +425,13 @@ const stateCityMap = {
                             <td className="px-4 py-2 border">
                               <button
                                 onClick={() => handleEdit(bank)}
-                                className="text-blue-600 hover:underline mr-4 hover:cursor-pointer"
+                                className="text-primary hover:underline mr-4 hover:cursor-pointer"
                               >
                                 Edit
                               </button>
                               <button
                                 onClick={() => handleDelete(bank.id)}
-                                className="text-red-600 hover:underline hover:cursor-pointer"
+                                className="text-primary hover:underline hover:cursor-pointer"
                               >
                                 Delete
                               </button>
@@ -440,8 +450,8 @@ const stateCityMap = {
       {/* Modal section */}
       {isEditModalOpen && (
         <div className="fixed inset-0 bg-black/70 bg-opacity-40 flex items-center justify-center z-30 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-lg w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
-            <h2 className="text-lg font-semibold text-center text-blue-900 mb-6">
+          <div className="card card-animate w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
+              <h2 className="text-lg font-semibold text-center text-secondary mb-6">
               Edit Blood Stock Details
             </h2>
 
@@ -536,13 +546,13 @@ const stateCityMap = {
             <div className="flex justify-end gap-4 mt-6">
               <button
                 onClick={handleCloseModal}
-                className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 hover:cursor-pointer"
+                className="px-4 py-2 rounded-md bg-app text-secondary btn-animate"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveChanges}
-                className="px-4 py-2 rounded-md bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer"
+                className="px-4 py-2 rounded-md btn-primary btn-animate text-on-primary"
               >
                 Save
               </button>

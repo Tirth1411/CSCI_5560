@@ -3,7 +3,7 @@ import { NavLink, Link } from 'react-router-dom'
 
 function Navbar() {
   return (
-    <nav className='flex h-[11vh] bg-red-300 justify-between items-center text-xl shadow-sm border-b-4 border-green-400 sticky top-0 px-10 z-50'>
+    <nav className='flex h-[11vh] bg-primary text-on-primary justify-between items-center text-xl shadow-sm sticky top-0 px-10 z-50 slide-down'>
       {/* Brand */}
       <div className='text-xl font-medium'>
         <Link to="/">Blood Nation</Link>
@@ -15,7 +15,7 @@ function Navbar() {
           to="/"
           className={({ isActive }) =>
             `p-1 hover:underline transition duration-150 ${
-              isActive ? "underline font-semibold text-black" : "text-black"
+              isActive ? "underline font-semibold text-on-primary" : "text-on-primary"
             }`
           }
         >
@@ -24,9 +24,9 @@ function Navbar() {
 
         <NavLink
           to="/bloodAvailability"
-          className={({ isActive }) =>
+            className={({ isActive }) =>
             `p-1 hover:underline transition duration-150 ${
-              isActive ? "underline font-semibold text-black" : "text-black"
+              isActive ? "underline font-semibold text-on-primary" : "text-on-primary"
             }`
           }
         >
@@ -35,9 +35,9 @@ function Navbar() {
 
         <NavLink
           to="/login"
-          className={({ isActive }) =>
+            className={({ isActive }) =>
             `p-1 hover:underline transition duration-150 ${
-              isActive ? "underline font-semibold text-black" : "text-black"
+              isActive ? "underline font-semibold text-on-primary" : "text-on-primary"
             }`
           }
         >
@@ -46,9 +46,9 @@ function Navbar() {
 
         <NavLink
           to="/bloodBankLogin"
-          className={({ isActive }) =>
+            className={({ isActive }) =>
             `p-1 hover:underline transition duration-150 ${
-              isActive ? "underline font-semibold text-black" : "text-black"
+              isActive ? "underline font-semibold text-on-primary" : "text-on-primary"
             }`
           }
         >

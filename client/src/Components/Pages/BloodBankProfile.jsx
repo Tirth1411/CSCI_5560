@@ -134,16 +134,16 @@ function BloodBankProfile() {
     <>
       <LoggedBankNavbar />
       {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-red-200/30">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-primary-100">
           <div className="flex flex-col items-center justify-center bg-white/30 p-8 rounded-2xl shadow-2xl border border-white/40 backdrop-blur-lg">
-            <div className="w-10 h-10 border-4 border-t-transparent border-red-400 rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
           </div>
         </div>
       )}
-      <section className="min-h-[89vh] bg-red-50">
+      <section className="min-h-[89vh] bg-app">
         {/* Dashboard Header */}
-        <div className="flex justify-center items-center pt-8 pb-6 bg-white shadow-md">
-          <span className="font-bold text-3xl text-gray-800 tracking-wide border-b-4 border-red-400 pb-1">
+        <div className="flex justify-center items-center pt-8 pb-6 card">
+          <span className="font-bold text-3xl text-gray-800 tracking-wide border-b-4 border-primary pb-1">
             DASHBOARD
           </span>
         </div>
@@ -151,8 +151,8 @@ function BloodBankProfile() {
         {/* Profile Details Section */}
         <div className="flex justify-center items-start gap-10 px-6 py-10 flex-wrap">
           {/* Your Details Card */}
-          <div className="bg-white p-6 rounded-2xl shadow-lg max-w-3xl w-full">
-            <h2 className="text-xl font-semibold text-red-600 mb-4 text-center border-b-2 border-red-400 pb-2">
+          <div className="card p-6 rounded-2xl max-w-3xl w-full">
+            <h2 className="text-xl font-semibold text-primary mb-4 text-center border-b-2 border-primary pb-2">
               Bank Details
             </h2>
             <div className="flex flex-col gap-3 text-gray-700 text-base">
@@ -204,8 +204,8 @@ function BloodBankProfile() {
           </div>
 
           {/* Additional Details Card */}
-          <div className="bg-white p-6 rounded-2xl shadow-lg max-w-lg w-full">
-            <h2 className="text-xl font-semibold text-red-600 mb-4 text-center border-b-2 border-red-400 pb-2">
+          <div className="card p-6 rounded-2xl max-w-lg w-full">
+            <h2 className="text-xl font-semibold text-primary mb-4 text-center border-b-2 border-primary pb-2">
               Change Password
             </h2>
             <div className="flex flex-col items-center gap-3 text-gray-700 text-base">
@@ -231,11 +231,11 @@ function BloodBankProfile() {
                 className="border p-2 rounded-md w-full"
               />
               {passwordError && (
-                <p className=" text-red-500 text-xs">{passwordError}</p>
+                <p className=" text-primary text-xs">{passwordError}</p>
               )}
               <button
                 onClick={handleChangePassword}
-                className="p-2 w-1/4 bg-red-300 rounded-2xl shadow-sm shadow-black/20 hover:bg-red-400 hover:shadow-md cursor-pointer"
+                className="p-2 w-1/4 btn-primary btn-animate text-on-primary rounded-2xl"
               >
                 Change
               </button>

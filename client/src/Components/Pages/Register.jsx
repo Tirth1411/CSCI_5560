@@ -109,13 +109,13 @@ function Register() {
   return (
     <>
       {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-red-200/30">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-primary-100">
           <div className="flex flex-col items-center justify-center bg-white/30 p-8 rounded-2xl shadow-2xl border border-white/40 backdrop-blur-lg">
-            <div className="w-10 h-10 border-4 border-t-transparent border-red-400 rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
           </div>
         </div>
       )}
-      <section className=" h-screen bg-red-50 flex justify-center items-center">
+  <section className=" h-screen bg-app flex justify-center items-center">
         <span className=" absolute text-2xl font-sans font-bold top-3 left-3">
           <Link to="/" className="hover:underline">
             &larr; Home
@@ -129,7 +129,7 @@ function Register() {
         <h1 className=" absolute top-10 font-extrabold font-sans text-4xl">
           Donor Sign-up
         </h1>
-        <div className=" flex justify-center items-center h-2/3 w-1/2 bg-green-200/80 backdrop-saturate-150 backdrop-blur-md shadow-lg">
+  <div className=" flex justify-center items-center h-2/3 w-1/2 bg-app backdrop-saturate-150 backdrop-blur-md shadow-lg">
           <div className="flex justify-center items-center w-3/4 h-full">
             <form
               onSubmit={handleRegister}
@@ -216,7 +216,7 @@ function Register() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                   {passwordError && (
-                    <p className=" text-red-500 text-xs">{passwordError}</p>
+                    <p className=" text-primary text-xs">{passwordError}</p>
                   )}
                 </div>
               </div>
@@ -233,13 +233,13 @@ function Register() {
               </span>
               <button
                 type="submit"
-                className=" mt-4 w-30 h-10 self-center rounded-2xl bg-red-200 hover:shadow-xl hover:cursor-pointer hover:bg-red-300"
+                className=" mt-4 w-30 h-10 self-center rounded-2xl btn-primary btn-animate"
               >
                 Register
               </button>
               <span className="text-sm font-medium text-center mt-4">
                 Already have an account?{" "}
-                <span className="underline hover:text-red-600">
+                <span className="underline text-primary">
                   <Link to="/login">Login</Link>
                 </span>
               </span>

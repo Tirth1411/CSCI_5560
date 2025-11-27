@@ -143,17 +143,17 @@ function AddBank() {
   return (
     <>
       {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-blue-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-primary-100">
           <div className="flex flex-col items-center justify-center bg-white/30 p-8 rounded-2xl shadow-2xl border border-white/40 backdrop-blur-lg">
-            <div className="w-10 h-10 border-4 border-t-transparent border-blue-400 rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
           </div>
         </div>
       )}
       <div className=" flex h-screen">
         <Sidebar />
-        <div className=" flex-1 bg-white">
-          <div className="flex items-center justify-between p-4 border-b shadow">
-            <h1 className="text-2xl font-semibold text-blue-900">
+        <div className=" flex-1 bg-app">
+          <div className="flex items-center justify-between p-4 shadow">
+            <h1 className="text-2xl font-semibold text-secondary">
               Add Blood Bank
             </h1>
           </div>
@@ -321,7 +321,7 @@ function AddBank() {
             </div>
             <button
               type="submit"
-              className="mt-4 bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-800 cursor-pointer"
+              className="mt-4 btn-primary btn-animate px-4 py-2 rounded cursor-pointer"
             >
               Submit
             </button>

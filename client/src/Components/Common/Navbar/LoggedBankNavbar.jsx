@@ -24,7 +24,7 @@ function LoggedBankNavbar() {
   }, []);
 
   return (
-    <nav className="flex h-[11vh] bg-red-300 justify-between items-center text-xl shadow-sm border-b-4 border-green-400 sticky top-0 px-10 z-50 ">
+    <nav className="flex h-[11vh] bg-primary text-on-primary justify-between items-center text-xl shadow-sm sticky top-0 px-10 z-50 slide-down">
       <div className="text-xl font-medium">
         <Link to="/">Blood Nation</Link>
       </div>
@@ -49,7 +49,7 @@ function LoggedBankNavbar() {
 
         <button
           onClick={() => setProfileDivStatus((prev) => !prev)}
-          className="flex items-center gap-2 px-4 py-1 rounded-full hover:underline cursor-pointer transition duration-200"
+          className="flex items-center gap-2 px-4 py-1 rounded-full hover-bg-primary-100 cursor-pointer transition duration-200"
         >
           <UserCircle className="w-6 h-6 text-black" />
           <span className=" text-xl font-medium">Blood Bank</span>
@@ -68,14 +68,14 @@ function LoggedBankNavbar() {
             <Link
               to="/bloodBankProfile"
               onClick={() => setProfileDivStatus(false)}
-              className="block px-4 py-2 hover:bg-red-200 text-gray-800 transition-colors"
+              className="block px-4 py-2 hover-bg-primary-100 text-gray-800 transition-colors"
             >
               View Profile
             </Link>
 
             <button
               onClick={logout}
-              className="flex items-center gap-2 px-4 py-2 w-full text-left text-red-600 hover:bg-red-200 hover:cursor-pointer font-semibold transition-colors"
+              className="flex items-center gap-2 px-4 py-2 w-full text-left text-primary hover-bg-primary-100 hover:cursor-pointer font-semibold transition-colors"
             >
               <LogOut className="w-4 h-4" />
               Logout

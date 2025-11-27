@@ -72,17 +72,17 @@ function Users() {
   return (
     <>
       {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-blue-200/30">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-primary-100">
           <div className="flex flex-col items-center justify-center bg-white/30 p-8 rounded-2xl shadow-2xl border border-white/40 backdrop-blur-lg">
-            <div className="w-10 h-10 border-4 border-t-transparent border-blue-400 rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
           </div>
         </div>
       )}
       <div className="flex h-screen">
         <Sidebar />
-        <div className="flex-1 bg-white overflow-auto">
+  <div className="flex-1 bg-app overflow-auto">
           <div className="flex items-center justify-between p-4 border-b shadow">
-            <h1 className="text-2xl font-semibold text-blue-900">
+             <h1 className="text-2xl font-semibold text-secondary">
               Users Details
             </h1>
           </div>
@@ -90,7 +90,7 @@ function Users() {
           <div className="p-6 text-gray-800">
             <div className="overflow-x-auto">
               <table className="min-w-full table-auto border-collapse border border-gray-300">
-                <thead className="bg-blue-900 text-white">
+                <thead className="bg-primary text-on-primary">
                   <tr>
                     <th className="px-4 py-2 border">First Name</th>
                     <th className="px-4 py-2 border">Last Name</th>
@@ -104,7 +104,7 @@ function Users() {
                 </thead>
                 <tbody>
                   {users.map((user, index) => (
-                    <tr key={user.id || index} className="border-t">
+                    <tr key={user.id || index} className="border-t row-appear">
                       <td className="px-4 py-2 border">{user.firstName}</td>
                       <td className="px-4 py-2 border">{user.lastName}</td>
                       <td className="px-4 py-2 border">{user.fatherName}</td>
@@ -115,7 +115,7 @@ function Users() {
                       <td className="px-4 py-2 border">
                         <button
                           onClick={() => handleDelete(user.id)}
-                          className="text-red-600 hover:underline hover:cursor-pointer"
+                          className="text-primary hover:underline hover:cursor-pointer"
                         >
                           Delete
                         </button>

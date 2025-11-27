@@ -11,6 +11,8 @@ function BloodBanks() {
 
   const navigate = useNavigate();
 
+  
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -175,6 +177,12 @@ const stateCityMap = {
     console.log(bloodBank);
   }, [bloodBank])
 
+  // On mount, load all banks (no state/city filters) so the table shows all by default
+  useEffect(() => {
+    fetchBloodBank();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleDelete = async (docId) => {
     if (window.confirm("Do you want to delete this blood bank?")) {
       setLoading(true);
@@ -210,143 +218,73 @@ const stateCityMap = {
   return (
     <>
       {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-blue-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-primary-100">
           <div className="flex flex-col items-center justify-center bg-white/30 p-8 rounded-2xl shadow-2xl border border-white/40 backdrop-blur-lg">
-            <div className="w-10 h-10 border-4 border-t-transparent border-blue-400 rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
           </div>
         </div>
       )}
       <div className="flex h-screen">
         <Sidebar />
-        <div className="flex-1 bg-white overflow-auto">
-          <div className="flex items-center justify-between p-4 border-b shadow">
-            <h1 className="text-2xl font-semibold text-blue-900">
+        <div className="flex-1 bg-app overflow-auto">
+          <div className="flex items-center justify-between p-4 shadow">
+            <h1 className="text-2xl font-semibold text-secondary">
               Blood Banks
             </h1>
+
+            
           </div>
 
-          {/* Search Section */}
+          {/* Search removed — showing all banks by default; keep the Filter section below */}
+
+          {/* Filter Section (state & city filters only) */}
           <div className="px-6 pt-6">
-            <div className="border p-4 rounded-lg shadow-md bg-white mb-4">
-              <h2 className="font-semibold text-blue-800 mb-4">Search</h2>
-              <div className="flex flex-wrap gap-4">
-                <select
-                  name="state"
-                  className="border p-2 rounded-md shadow w-52 hover:cursor-pointer"
-                  onChange={(e) => setState(e.target.value)}
-                >
-                  <option value="" selected disabled>
-  Select State
-</option>
-<option value="Alabama">Alabama</option>
-<option value="Alaska">Alaska</option>
-<option value="Arizona">Arizona</option>
-<option value="Arkansas">Arkansas</option>
-<option value="California">California</option>
-<option value="Colorado">Colorado</option>
-<option value="Connecticut">Connecticut</option>
-<option value="Delaware">Delaware</option>
-<option value="Florida">Florida</option>
-<option value="Georgia">Georgia</option>
-<option value="Hawaii">Hawaii</option>
-<option value="Idaho">Idaho</option>
-<option value="Illinois">Illinois</option>
-<option value="Indiana">Indiana</option>
-<option value="Iowa">Iowa</option>
-<option value="Kansas">Kansas</option>
-<option value="Kentucky">Kentucky</option>
-<option value="Louisiana">Louisiana</option>
-<option value="Maine">Maine</option>
-<option value="Maryland">Maryland</option>
-<option value="Massachusetts">Massachusetts</option>
-<option value="Michigan">Michigan</option>
-<option value="Minnesota">Minnesota</option>
-<option value="Mississippi">Mississippi</option>
-<option value="Missouri">Missouri</option>
-<option value="Montana">Montana</option>
-<option value="Nebraska">Nebraska</option>
-<option value="Nevada">Nevada</option>
-<option value="New Hampshire">New Hampshire</option>
-<option value="New Jersey">New Jersey</option>
-<option value="New Mexico">New Mexico</option>
-<option value="New York">New York</option>
-<option value="North Carolina">North Carolina</option>
-<option value="North Dakota">North Dakota</option>
-<option value="Ohio">Ohio</option>
-<option value="Oklahoma">Oklahoma</option>
-<option value="Oregon">Oregon</option>
-<option value="Pennsylvania">Pennsylvania</option>
-<option value="Rhode Island">Rhode Island</option>
-<option value="South Carolina">South Carolina</option>
-<option value="South Dakota">South Dakota</option>
-<option value="Tennessee">Tennessee</option>
-<option value="Texas">Texas</option>
-<option value="Utah">Utah</option>
-<option value="Vermont">Vermont</option>
-<option value="Virginia">Virginia</option>
-<option value="Washington">Washington</option>
-<option value="West Virginia">West Virginia</option>
-<option value="Wisconsin">Wisconsin</option>
-<option value="Wyoming">Wyoming</option>
-                </select>
-                <select
-                  name="city"
-                  className="border p-2 rounded-md shadow w-52 hover:cursor-pointer"
-                  onChange={(e) => setCity(e.target.value)}
-                >
-                  <option value="" selected disabled>
-                    Select City
-                  </option>
-                  {citiesList.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  className="bg-blue-900 text-white px-4 py-2 rounded-md shadow hover:bg-blue-800 cursor-pointer"
-                  onClick={fetchBloodBank}
-                >
-                  Search
-                </button>
-              </div>
-            </div>
-          </div>
+            <div className="card card-animate p-4 mb-4">
+              <h2 className="font-semibold text-secondary mb-4">Filter</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                <div>
+                  <label className="block text-sm text-gray-600 mb-1">State</label>
+                  <select
+                    value={state}
+                    onChange={(e) => { setState(e.target.value); setCity(''); }}
+                    className="w-full border p-2 rounded-md shadow hover:cursor-pointer"
+                  >
+                    <option value="" disabled>Select State</option>
+                    {Object.keys(stateCityMap).map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
 
-          {/* Filter Section */}
-          <div className="px-6">
-            <div className="border p-4 rounded-lg shadow-md bg-white mb-4">
-              <h2 className="font-semibold text-blue-800 mb-4">Filter</h2>
-              <div className="flex flex-wrap gap-4">
-                <select
-                  value={filterName}
-                  onChange={(e) => setFilterName(e.target.value)}
-                  className="border p-2 rounded-md shadow w-52 hover:cursor-pointer"
-                >
-                  <option value="">All Bank Names</option>
-                  {[...new Set(bloodBank.map((b) => b.bloodBankName))].map(
-                    (name) => (
-                      <option key={name} value={name}>
-                        {name}
-                      </option>
-                    )
-                  )}
-                </select>
+                <div>
+                  <label className="block text-sm text-gray-600 mb-1">City</label>
+                  <select
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    className="w-full border p-2 rounded-md shadow hover:cursor-pointer"
+                    disabled={!citiesList.length}
+                  >
+                    <option value="" disabled>Select City</option>
+                    {citiesList.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
 
-                <select
-                  value={filterCategory}
-                  onChange={(e) => setFilterCategory(e.target.value)}
-                  className="border p-2 rounded-md shadow w-52 hover:cursor-pointer"
-                >
-                  <option value="">All Categories</option>
-                  {[...new Set(bloodBank.map((b) => b.bloodBankCategory))].map(
-                    (cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    )
-                  )}
-                </select>
+                <div className="md:col-span-2 flex gap-3">
+                  <button
+                    className="btn-primary btn-animate px-4 py-2 rounded-md"
+                    onClick={fetchBloodBank}
+                  >
+                    Apply
+                  </button>
+                  <button
+                    className="px-4 py-2 rounded-md bg-app text-secondary btn-animate"
+                    onClick={() => { setFilterName(''); setFilterCategory(''); setState(''); setCity(''); fetchBloodBank(); }}
+                  >
+                    Clear
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -355,7 +293,7 @@ const stateCityMap = {
           <div className="p-6 text-gray-800">
             <div className="overflow-x-auto">
               <table className="min-w-full table-auto border-collapse border border-gray-300">
-                <thead className="bg-blue-900 text-white">
+                <thead className="bg-primary text-on-primary">
                   <tr>
                     <th className="px-4 py-2 border">Actions</th>
                     <th className="px-4 py-2 border">Blood Bank Name</th>
@@ -375,8 +313,8 @@ const stateCityMap = {
                   {bloodBank.length === 0 ? (
                     <tr>
                       <td
-                        colSpan="11"
-                        className="text-center py-4 font-semibold text-red-500"
+                        colSpan="12"
+                        className="text-center py-4 font-semibold text-primary"
                       >
                         {tableInfo}
                       </td>
@@ -390,17 +328,17 @@ const stateCityMap = {
                             bank.bloodBankCategory === filterCategory)
                       )
                       .map((bank, index) => (
-                        <tr key={bank.id || index} className="border-t">
+                        <tr key={bank.id || index} className="border-t row-appear">
                           <td className="px-4 py-2 border">
                             <button
                               onClick={() => handleEdit(bank)}
-                              className="text-blue-600 hover:underline mr-4 hover:cursor-pointer"
+                              className="text-primary hover:underline mr-4 hover:cursor-pointer"
                             >
                               Edit
                             </button>
                             <button
                               onClick={() => handleDelete(bank.id)}
-                              className="text-red-600 hover:underline hover:cursor-pointer"
+                              className="text-primary hover:underline hover:cursor-pointer"
                             >
                               Delete
                             </button>
@@ -442,7 +380,7 @@ const stateCityMap = {
       {isEditModalOpen && (
         <div className="fixed inset-0 bg-black/70 bg-opacity-40 flex items-center justify-center z-30 overflow-y-auto">
           <div className="bg-white rounded-2xl shadow-lg w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
-            <h2 className="text-lg font-semibold text-center text-blue-900 mb-6">
+            <h2 className="text-lg font-semibold text-center text-secondary mb-6">
               Edit Blood Bank Details
             </h2>
 
@@ -595,7 +533,7 @@ const stateCityMap = {
                     setEditData({ ...editData, state: e.target.value })
                   }
                 >
-                  <option value="" selected disabled>
+                  <option value="" disabled>
   Select State
 </option>
 <option value="Alabama">Alabama</option>
@@ -678,13 +616,13 @@ const stateCityMap = {
             <div className="flex justify-end gap-4 mt-6">
               <button
                 onClick={handleCloseModal}
-                className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 hover:cursor-pointer"
+                className="px-4 py-2 rounded-md bg-app text-secondary btn-animate"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveChanges}
-                className="px-4 py-2 rounded-md bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer"
+                className="px-4 py-2 rounded-md btn-primary btn-animate text-on-primary"
               >
                 Save
               </button>

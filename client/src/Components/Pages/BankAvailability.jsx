@@ -12,6 +12,9 @@ function BankAvailability() {
   const [showModal, setShowModal] = useState(false);
 
   const [bloodStockList, setBloodStockList] = useState([]);
+  const [filteredBloodStockList, setFilteredBloodStockList] = useState([]);
+  const [filterBloodGroup, setFilterBloodGroup] = useState("");
+  const [filterBloodType, setFilterBloodType] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
   const [errorStatus1, setErrorStatus1] = useState(false);
@@ -59,8 +62,19 @@ function BankAvailability() {
   }, []);
 
   useEffect(() => {
-    console.log("Updated bloodStockList:", bloodStockList);
-  }, [bloodStockList]);
+    // Apply filters to bloodStockList
+    let filtered = [...bloodStockList];
+    
+    if (filterBloodGroup) {
+      filtered = filtered.filter(stock => stock.bloodGroup === filterBloodGroup);
+    }
+    
+    if (filterBloodType) {
+      filtered = filtered.filter(stock => stock.bloodType === filterBloodType);
+    }
+    
+    setFilteredBloodStockList(filtered);
+  }, [bloodStockList, filterBloodGroup, filterBloodType]);
 
   useEffect(() => {
     const duplicateExists = bloodStockList.some(
@@ -196,23 +210,74 @@ function BankAvailability() {
     <>
       <LoggedBankNavbar />
       {loading && (
-        <div className="fixed inset-0 z-51 flex items-center justify-center backdrop-blur-md bg-red-200/30">
+        <div className="fixed inset-0 z-51 flex items-center justify-center backdrop-blur-md bg-primary-100">
           <div className="flex flex-col items-center justify-center bg-white/30 p-8 rounded-2xl shadow-2xl border border-white/40 backdrop-blur-lg">
-            <div className="w-10 h-10 border-4 border-t-transparent border-red-400 rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
           </div>
         </div>
       )}
-      <section className="min-h-[89vh] bg-gray-50 px-6 py-10">
+      <section className="min-h-[89vh] bg-app px-6 py-10">
         <div className="max-w-4xl mx-auto">
           {/* Form Section */}
-          <div className="bg-white p-6 rounded-2xl shadow-md mb-10">
-            <h2 className="text-2xl font-semibold text-center text-red-600 mb-6">
-              Add Blood Stock
-            </h2>
+          <div className="card card-animate p-6 mb-10">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-semibold text-primary">
+                Add Blood Stock
+              </h2>
+              <div className="flex gap-4 items-center">
+                <select
+                  className="p-2 border border-gray-300 rounded-md hover:cursor-pointer text-sm"
+                  value={filterBloodGroup}
+                  onChange={(e) => setFilterBloodGroup(e.target.value)}
+                >
+                  <option value="">All Blood Groups</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+
+                <select
+                  className="p-2 border border-gray-300 rounded-md hover:cursor-pointer text-sm"
+                  value={filterBloodType}
+                  onChange={(e) => setFilterBloodType(e.target.value)}
+                >
+                  <option value="">All Blood Types</option>
+                  <option value="Whole Blood">Whole Blood</option>
+                  <option value="Single Donor Platelet">Single Donor Platelet</option>
+                  <option value="Single Donor Plasma">Single Donor Plasma</option>
+                  <option value="Sagm Packed Red Blood Cells">Sagm Packed Red Blood Cells</option>
+                  <option value="Random Donor Platelets">Random Donor Platelets</option>
+                  <option value="Platelet Rich Plasma">Platelet Rich Plasma</option>
+                  <option value="Platelet Concentrate">Platelet Concentrate</option>
+                  <option value="Plasma">Plasma</option>
+                  <option value="Packed Red Blood Cells">Packed Red Blood Cells</option>
+                  <option value="Leukoreduced RBC">Leukoreduced RBC</option>
+                  <option value="Irradiated RBC">Irradiated RBC</option>
+                  <option value="Fresh Frozen Plasma">Fresh Frozen Plasma</option>
+                  <option value="Cryoprecipitate">Cryoprecipitate</option>
+                  <option value="Cryo Poor Plasma">Cryo Poor Plasma</option>
+                </select>
+
+                <button
+                  onClick={() => {
+                    setFilterBloodGroup("");
+                    setFilterBloodType("");
+                  }}
+                  className="px-3 py-2 bg-app text-secondary rounded-md btn-animate text-sm"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted mb-1">
                     Blood Group
                   </label>
                   <select
@@ -235,7 +300,7 @@ function BankAvailability() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted mb-1">
                     Blood Type
                   </label>
                   <select
@@ -280,7 +345,7 @@ function BankAvailability() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted mb-1">
                     Quantity
                   </label>
                   <input
@@ -293,13 +358,13 @@ function BankAvailability() {
                   />
                 </div>
               </div>
-              <div className="text-center">
+                <div className="text-center">
                 {errorMessage && (
-                  <p className=" text-red-500 text-md mb-2">{errorMessage}</p>
+                  <p className=" text-primary text-md mb-2">{errorMessage}</p>
                 )}
                 <button
                   type="submit"
-                  className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-md transition hover:cursor-pointer"
+                  className="btn-primary btn-animate text-on-primary font-semibold px-6 py-2 rounded-md transition hover:cursor-pointer"
                 >
                   {editId ? "Update" : "Add"}
                 </button>
@@ -308,13 +373,13 @@ function BankAvailability() {
           </div>
 
           {/* Table Section */}
-          <div className="bg-white p-6 rounded-2xl shadow-md">
-            <h2 className="text-xl font-semibold text-center text-red-600 mb-4">
+          <div className="card p-6 rounded-2xl">
+            <h2 className="text-xl font-semibold text-center text-primary mb-4">
               Current Blood Stock
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-sm shadow-sm">
-                <thead className="bg-red-100 text-gray-800">
+                <thead className="bg-primary text-on-primary">
                   <tr>
                     <th className="border px-4 py-3 text-center">
                       Blood Group
@@ -328,15 +393,15 @@ function BankAvailability() {
                   {bloodStockList.length === 0 ? (
                     <tr>
                       <td
-                        colSpan="4"
-                        className="text-center py-4 text-gray-500"
-                      >
+                          colSpan="4"
+                          className="text-center py-4 text-muted"
+                        >
                         No blood stock available.
                       </td>
                     </tr>
-                  ) : (
-                    bloodStockList.map((bank) => (
-                      <tr key={bank.id} className="hover:bg-red-50 transition">
+                    ) : (
+                    filteredBloodStockList.map((bank) => (
+                      <tr key={bank.id} className="hover:bg-primary-100 transition row-appear">
                         <td className="border px-4 py-2 text-center">
                           {bank.bloodGroup}
                         </td>
@@ -346,16 +411,16 @@ function BankAvailability() {
                         <td className="border px-4 py-2 text-center">
                           {bank.quantity}
                         </td>
-                        <td className="border px-4 py-2 text-center">
+                          <td className="border px-4 py-2 text-center">
                           <button
                             onClick={() => handleEdit(bank)}
-                            className="text-blue-600 hover:underline mr-4 hover:cursor-pointer"
+                            className="text-primary hover:underline mr-4 hover:cursor-pointer"
                           >
                             Edit
                           </button>
                           <button
                             onClick={() => handleDelete(bank.id)}
-                            className="text-red-600 hover:underline hover:cursor-pointer"
+                            className="text-primary hover:underline hover:cursor-pointer"
                           >
                             Delete
                           </button>
@@ -373,10 +438,10 @@ function BankAvailability() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6 w-[90%] max-w-lg">
-            <h3 className="text-lg font-semibold text-red-600 mb-4 text-center">
-              Edit Blood Stock
-            </h3>
+          <div className="card card-animate border border-gray-200 shadow-xl rounded-xl p-6 w-[90%] max-w-lg">
+              <h3 className="text-lg font-semibold text-primary mb-4 text-center">
+                Edit Blood Stock
+              </h3>
             <form onSubmit={handleUpdate} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <select
@@ -446,17 +511,17 @@ function BankAvailability() {
                 />
               </div>
 
-              <div className="flex justify-end gap-4 mt-4">
+                <div className="flex justify-end gap-4 mt-4">
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="px-4 py-2 border rounded-md text-gray-700 hover:bg-gray-100 hover:cursor-pointer"
+                  className="px-4 py-2 border rounded-md bg-app text-secondary btn-animate"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 hover:cursor-pointer"
+                  className="px-6 py-2 btn-primary text-on-primary rounded-md btn-animate"
                 >
                   Update
                 </button>
